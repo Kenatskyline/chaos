@@ -1,198 +1,100 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ravens Nest Chaos</title>
 
 <style>
-* { box-sizing: border-box; }
-
 body {
-  margin: 0;
-  min-height: 100vh;
-  background: radial-gradient(circle at top, #1b1b1b, #050505 70%);
-  color: white;
-  font-family: Arial, sans-serif;
-  text-align: center;
-  overflow-x: hidden;
-}
-
-body.shake { animation: shake 0.18s ease-in-out; }
-
-@keyframes shake {
-  0% { transform: translate(0,0); }
-  25% { transform: translate(2px,-2px); }
-  50% { transform: translate(-2px,2px); }
-  75% { transform: translate(2px,1px); }
-  100% { transform: translate(0,0); }
+  margin:0;
+  background:#0b0b0b;
+  color:white;
+  font-family:Arial, sans-serif;
+  text-align:center;
 }
 
 h1 {
-  margin: 28px 0 6px;
-  font-size: 42px;
-  letter-spacing: 10px;
-}
-
-.subtitle {
-  color: #aaa;
-  font-size: 16px;
-  margin-bottom: 24px;
+  margin-top:20px;
+  letter-spacing:6px;
 }
 
 .grid {
-  display: grid;
+  display:grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 18px;
-  padding: 16px;
-  max-width: 720px;
-  margin: auto;
+  gap:20px;
+  padding:20px;
+  max-width:600px;
+  margin:auto;
 }
 
 .disc {
-  width: 100%;
-  aspect-ratio: 1 / 1;
-  perspective: 1000px;
-  cursor: pointer;
-  filter: drop-shadow(0 14px 12px rgba(0,0,0,.65));
+  width:100%;
+  aspect-ratio:1/1;
+  perspective:1000px;
 }
 
 .inner {
-  width: 100%;
-  height: 100%;
-  position: relative;
-  transform-style: preserve-3d;
-  transition: transform 0.52s cubic-bezier(.18,.9,.28,1.2);
-}
-
-.disc:active .inner {
-  transform: scale(1.05);
+  width:100%;
+  height:100%;
+  position:relative;
+  transform-style:preserve-3d;
+  transition: transform 0.5s ease;
 }
 
 .disc.flipped .inner {
-  transform: rotateY(180deg) scale(1.03);
+  transform: rotateY(180deg);
 }
 
 .face {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  backface-visibility: hidden;
-  border-radius: 50%;
-  overflow: hidden;
-}
-
-.front {
-  background: #111;
+  position:absolute;
+  width:100%;
+  height:100%;
+  backface-visibility:hidden;
+  border-radius:50%;
 }
 
 .front img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 50%;
-  display: block;
-}
-
-.image-error {
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  background: #222;
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 11px;
-  padding: 12px;
-  line-height: 1.2;
+  width:100%;
+  height:100%;
+  border-radius:50%;
+  object-fit:cover;
 }
 
 .back {
   transform: rotateY(180deg);
-  background:
-    radial-gradient(circle at 35% 25%, rgba(255,255,255,.45), transparent 20%),
-    radial-gradient(circle, #f6edda, #dfc8a3 65%, #8b6e49);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 12px;
-  color: #111;
-  box-shadow: inset 0 0 0 10px rgba(0,0,0,.18);
-}
-
-.back::before {
-  content: "";
-  position: absolute;
-  inset: 12%;
-  border-radius: 50%;
-  border: 3px dashed rgba(0,0,0,.25);
-  transform: rotate(-8deg);
+  background:#f3e6c9;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:10px;
+  border-radius:50%;
 }
 
 .chaos {
-  position: relative;
-  z-index: 2;
-  width: 82%;
-  font-family: "Comic Sans MS", "Marker Felt", "Bradley Hand", cursive;
-  font-size: clamp(17px, 4.8vw, 38px);
-  font-weight: 900;
-  line-height: .9;
-  color: #111;
-  text-transform: uppercase;
-  transform: rotate(-6deg);
-  text-shadow: 1px 1px 0 rgba(0,0,0,.12);
+  font-family: "Comic Sans MS", cursive;
+  font-size:20px;
+  color:black;
+  transform:rotate(-5deg);
+  text-align:center;
 }
 
-.chaos small {
-  display: block;
-  margin-top: 8px;
-  font-size: .42em;
-  line-height: 1.05;
-  font-weight: 800;
-}
-
-.controls {
-  margin-top: 18px;
+.error {
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  height:100%;
+  background:#222;
+  border-radius:50%;
+  font-size:12px;
 }
 
 button {
-  padding: 15px 26px;
-  margin: 8px;
-  border: none;
-  border-radius: 999px;
-  font-weight: 900;
-  letter-spacing: 2px;
-  background: white;
-  color: #111;
-}
-
-button:active {
-  transform: scale(.97);
-}
-
-.status {
-  margin-top: 12px;
-  color: #bbb;
-  font-size: 16px;
-}
-
-@media (max-width: 520px) {
-  .grid {
-    gap: 12px;
-    padding: 12px;
-  }
-
-  h1 {
-    font-size: 34px;
-    letter-spacing: 8px;
-  }
-
-  .subtitle {
-    font-size: 14px;
-    padding: 0 12px;
-  }
+  padding:12px 20px;
+  margin:20px;
+  border:none;
+  border-radius:20px;
+  font-weight:bold;
 }
 </style>
 </head>
@@ -200,183 +102,100 @@ button:active {
 <body>
 
 <h1>CHAOS</h1>
-<div class="subtitle">Pick a disc. Color means nothing. Chaos is true random.</div>
 
 <div class="grid" id="grid"></div>
 
-<div class="controls">
-  <button onclick="resetDiscs()">RESET</button>
-  <button onclick="toggleSound()" id="soundBtn">SOUND ON</button>
-</div>
-
-<div class="status" id="status">Mercy or chaos?</div>
+<button onclick="reset()">RESET</button>
 
 <script>
+
+// 🔥 Chaos list
 const chaosList = [
-  {
-    title: "WEIGHTED<br>VEST",
-    sub: "Rolling curse. Wear it until someone else draws it."
-  },
-  {
-    title: "CURSED<br>CROWN",
-    sub: "Rolling curse. The tiara transfers when drawn again."
-  },
-  {
-    title: "PLANK<br>PRISON",
-    sub: "Plank until chains are heard."
-  },
-  {
-    title: "WEAK HAND<br>THROW",
-    sub: "Next time up: non-dominant hand only."
-  },
-  {
-    title: "SUICIDE<br>SPRINT",
-    sub: "Group suicides equal loser’s strokes."
-  },
-  {
-    title: "DOUBLE OR<br>NOTHING",
-    sub: "Putt-off. Winner gets zero. Loser doubles burpees."
-  }
+"WEIGHTED VEST",
+"CURSED CROWN",
+"PLANK PRISON",
+"WEAK HAND",
+"SUICIDE SPRINT",
+"DOUBLE OR NOTHING"
 ];
 
-const cacheBust = Date.now();
-
-const images = [
-  "discs/disc1.png",
-  "discs/disc2.png",
-  "discs/disc3.png",
-  "discs/disc4.png",
-  "discs/disc5.png",
-  "discs/disc6.png"
-].map(src => src + "?v=" + cacheBust);
+// 🔥 MULTI-PATH IMAGE LOADER (this is the fix)
+function getImage(i){
+  const paths = [
+    `discs/disc${i}.png`,
+    `/chaos/discs/disc${i}.png`,
+    `./discs/disc${i}.png`
+  ];
+  return paths;
+}
 
 const grid = document.getElementById("grid");
-const statusText = document.getElementById("status");
-const soundBtn = document.getElementById("soundBtn");
 
-let soundOn = true;
-let audioCtx = null;
-
-function build() {
+function build(){
   grid.innerHTML = "";
 
-  for (let i = 0; i < 6; i++) {
-    const disc = document.createElement("div");
-    disc.className = "disc";
+  for(let i=1;i<=6;i++){
 
-    disc.innerHTML = `
-      <div class="inner">
-        <div class="face front">
-          <img 
-            src="${images[i]}" 
-            alt="Chaos disc ${i + 1}"
-            onerror="this.replaceWith(makeError(${i + 1}))"
-          >
-        </div>
-        <div class="face back">
-          <div class="chaos"></div>
-        </div>
-      </div>
-    `;
+    let disc = document.createElement("div");
+    disc.className="disc";
 
-    disc.onclick = () => flipDisc(disc);
+    let inner = document.createElement("div");
+    inner.className="inner";
+
+    // FRONT
+    let front = document.createElement("div");
+    front.className="face front";
+
+    let img = document.createElement("img");
+    let paths = getImage(i);
+    let attempt = 0;
+
+    img.src = paths[attempt] + "?v=" + Date.now();
+
+    img.onerror = () => {
+      attempt++;
+      if(attempt < paths.length){
+        img.src = paths[attempt] + "?v=" + Date.now();
+      } else {
+        front.innerHTML = `<div class="error">disc${i}.png not found</div>`;
+      }
+    };
+
+    front.appendChild(img);
+
+    // BACK
+    let back = document.createElement("div");
+    back.className="face back";
+
+    let chaosDiv = document.createElement("div");
+    chaosDiv.className="chaos";
+
+    back.appendChild(chaosDiv);
+
+    inner.appendChild(front);
+    inner.appendChild(back);
+    disc.appendChild(inner);
+
+    disc.onclick = () => flip(disc);
+
     grid.appendChild(disc);
   }
 }
 
-function makeError(num) {
-  const div = document.createElement("div");
-  div.className = "image-error";
-  div.innerHTML = `IMAGE NOT FOUND<br>disc${num}.png<br><br>Check /discs/ folder`;
-  return div;
+function flip(disc){
+  if(disc.classList.contains("flipped")) return;
+
+  let chaos = chaosList[Math.floor(Math.random()*chaosList.length)];
+  disc.querySelector(".chaos").innerText = chaos;
+
+  disc.classList.add("flipped");
 }
 
-function flipDisc(disc) {
-  if (disc.classList.contains("flipped")) return;
-
-  playTap();
-
-  const chaos = chaosList[Math.floor(Math.random() * chaosList.length)];
-  disc.querySelector(".chaos").innerHTML =
-    `${chaos.title}<small>${chaos.sub}</small>`;
-
-  setTimeout(() => {
-    disc.classList.add("flipped");
-  }, 70);
-
-  setTimeout(() => {
-    playThud();
-    document.body.classList.remove("shake");
-    void document.body.offsetWidth;
-    document.body.classList.add("shake");
-    statusText.innerText = chaos.title.replaceAll("<br>", " ") + " has been sentenced.";
-  }, 420);
-}
-
-function resetDiscs() {
-  document.querySelectorAll(".disc").forEach(disc => {
-    disc.classList.remove("flipped");
-    disc.querySelector(".chaos").innerHTML = "";
+function reset(){
+  document.querySelectorAll(".disc").forEach(d=>{
+    d.classList.remove("flipped");
+    d.querySelector(".chaos").innerText="";
   });
-
-  statusText.innerText = "Mercy or chaos?";
-}
-
-function toggleSound() {
-  soundOn = !soundOn;
-  soundBtn.innerText = soundOn ? "SOUND ON" : "SOUND OFF";
-
-  if (soundOn) playThud();
-}
-
-function ensureAudio() {
-  if (!audioCtx) {
-    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-  }
-}
-
-function playTap() {
-  if (!soundOn) return;
-  ensureAudio();
-
-  const osc = audioCtx.createOscillator();
-  const gain = audioCtx.createGain();
-
-  osc.type = "triangle";
-  osc.frequency.setValueAtTime(650, audioCtx.currentTime);
-
-  gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
-  gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.05);
-
-  osc.connect(gain);
-  gain.connect(audioCtx.destination);
-
-  osc.start();
-  osc.stop(audioCtx.currentTime + 0.05);
-}
-
-function playThud() {
-  if (!soundOn) return;
-  ensureAudio();
-
-  const t = audioCtx.currentTime;
-
-  const osc = audioCtx.createOscillator();
-  const gain = audioCtx.createGain();
-
-  osc.type = "sine";
-  osc.frequency.setValueAtTime(95, t);
-  osc.frequency.exponentialRampToValueAtTime(38, t + 0.22);
-
-  gain.gain.setValueAtTime(0.001, t);
-  gain.gain.exponentialRampToValueAtTime(0.48, t + 0.012);
-  gain.gain.exponentialRampToValueAtTime(0.001, t + 0.42);
-
-  osc.connect(gain);
-  gain.connect(audioCtx.destination);
-
-  osc.start(t);
-  osc.stop(t + 0.45);
 }
 
 build();
