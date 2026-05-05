@@ -6,9 +6,7 @@
 <title>Ravens Nest Chaos</title>
 
 <style>
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
 body {
   margin: 0;
@@ -20,9 +18,7 @@ body {
   overflow-x: hidden;
 }
 
-body.shake {
-  animation: shake 0.18s ease-in-out;
-}
+body.shake { animation: shake 0.18s ease-in-out; }
 
 @keyframes shake {
   0% { transform: translate(0,0); }
@@ -33,15 +29,15 @@ body.shake {
 }
 
 h1 {
-  margin: 22px 0 4px;
-  font-size: 34px;
-  letter-spacing: 4px;
+  margin: 28px 0 6px;
+  font-size: 42px;
+  letter-spacing: 10px;
 }
 
 .subtitle {
   color: #aaa;
-  font-size: 13px;
-  margin-bottom: 18px;
+  font-size: 16px;
+  margin-bottom: 24px;
 }
 
 .grid {
@@ -49,7 +45,7 @@ h1 {
   grid-template-columns: repeat(3, 1fr);
   gap: 18px;
   padding: 16px;
-  max-width: 680px;
+  max-width: 720px;
   margin: auto;
 }
 
@@ -87,11 +83,30 @@ h1 {
   overflow: hidden;
 }
 
+.front {
+  background: #111;
+}
+
 .front img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   border-radius: 50%;
+  display: block;
+}
+
+.image-error {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: #222;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  padding: 12px;
+  line-height: 1.2;
 }
 
 .back {
@@ -139,16 +154,16 @@ h1 {
 }
 
 .controls {
-  margin-top: 12px;
+  margin-top: 18px;
 }
 
 button {
-  padding: 13px 22px;
+  padding: 15px 26px;
   margin: 8px;
   border: none;
   border-radius: 999px;
   font-weight: 900;
-  letter-spacing: .7px;
+  letter-spacing: 2px;
   background: white;
   color: #111;
 }
@@ -158,9 +173,9 @@ button:active {
 }
 
 .status {
-  margin-top: 6px;
+  margin-top: 12px;
   color: #bbb;
-  font-size: 13px;
+  font-size: 16px;
 }
 
 @media (max-width: 520px) {
@@ -170,7 +185,13 @@ button:active {
   }
 
   h1 {
-    font-size: 30px;
+    font-size: 34px;
+    letter-spacing: 8px;
+  }
+
+  .subtitle {
+    font-size: 14px;
+    padding: 0 12px;
   }
 }
 </style>
@@ -218,14 +239,16 @@ const chaosList = [
   }
 ];
 
+const cacheBust = Date.now();
+
 const images = [
-  "/chaos/discs/disc1.png?v=10",
-  "/chaos/discs/disc2.png?v=10",
-  "/chaos/discs/disc3.png?v=10",
-  "/chaos/discs/disc4.png?v=10",
-  "/chaos/discs/disc5.png?v=10",
-  "/chaos/discs/disc6.png?v=10"
-];
+  "discs/disc1.png",
+  "discs/disc2.png",
+  "discs/disc3.png",
+  "discs/disc4.png",
+  "discs/disc5.png",
+  "discs/disc6.png"
+].map(src => src + "?v=" + cacheBust);
 
 const grid = document.getElementById("grid");
 const statusText = document.getElementById("status");
@@ -244,7 +267,11 @@ function build() {
     disc.innerHTML = `
       <div class="inner">
         <div class="face front">
-          <img src="${images[i]}" alt="Chaos disc ${i + 1}">
+          <img 
+            src="${images[i]}" 
+            alt="Chaos disc ${i + 1}"
+            onerror="this.replaceWith(makeError(${i + 1}))"
+          >
         </div>
         <div class="face back">
           <div class="chaos"></div>
@@ -255,6 +282,13 @@ function build() {
     disc.onclick = () => flipDisc(disc);
     grid.appendChild(disc);
   }
+}
+
+function makeError(num) {
+  const div = document.createElement("div");
+  div.className = "image-error";
+  div.innerHTML = `IMAGE NOT FOUND<br>disc${num}.png<br><br>Check /discs/ folder`;
+  return div;
 }
 
 function flipDisc(disc) {
