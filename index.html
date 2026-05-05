@@ -10,13 +10,18 @@ body {
   margin:0;
   background:#0b0b0b;
   color:white;
-  font-family:Arial, sans-serif;
+  font-family: Arial, Helvetica, sans-serif;
   text-align:center;
 }
 
 h1 {
   margin-top:20px;
   letter-spacing:6px;
+}
+
+.subtitle {
+  color:#aaa;
+  margin-bottom:10px;
 }
 
 .grid {
@@ -52,6 +57,7 @@ h1 {
   height:100%;
   backface-visibility:hidden;
   border-radius:50%;
+  overflow:hidden;
 }
 
 .front img {
@@ -72,21 +78,10 @@ h1 {
 }
 
 .chaos {
-  font-family: "Comic Sans MS", cursive;
-  font-size:20px;
+  font-family: Impact, "Arial Black", sans-serif;
+  font-size:22px;
   color:black;
-  transform:rotate(-5deg);
   text-align:center;
-}
-
-.error {
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  height:100%;
-  background:#222;
-  border-radius:50%;
-  font-size:12px;
 }
 
 button {
@@ -96,88 +91,68 @@ button {
   border-radius:20px;
   font-weight:bold;
 }
+
+.status {
+  color:#bbb;
+}
 </style>
 </head>
 
 <body>
 
 <h1>CHAOS</h1>
+<div class="subtitle">Pick a disc. Color means nothing. Chaos is true random.</div>
 
 <div class="grid" id="grid"></div>
 
 <button onclick="reset()">RESET</button>
 
+<div class="status" id="status">Mercy or chaos?</div>
+
 <script>
 
-// 🔥 Chaos list
+// 🔥 Chaos
 const chaosList = [
 "WEIGHTED VEST",
 "CURSED CROWN",
 "PLANK PRISON",
-"WEAK HAND",
+"WEAK HAND THROW",
 "SUICIDE SPRINT",
 "DOUBLE OR NOTHING"
 ];
 
-// 🔥 MULTI-PATH IMAGE LOADER (this is the fix)
-function getImage(i){
-  const paths = [
-    `discs/disc${i}.png`,
-    `/chaos/discs/disc${i}.png`,
-    `./discs/disc${i}.png`
-  ];
-  return paths;
-}
+// 🔥 THIS FIXES YOUR ISSUE (pulls images directly from GitHub)
+const images = [
+"https://raw.githubusercontent.com/Kenatskyline/chaos/main/discs/disc1.png",
+"https://raw.githubusercontent.com/Kenatskyline/chaos/main/discs/disc2.png",
+"https://raw.githubusercontent.com/Kenatskyline/chaos/main/discs/disc3.png",
+"https://raw.githubusercontent.com/Kenatskyline/chaos/main/discs/disc4.png",
+"https://raw.githubusercontent.com/Kenatskyline/chaos/main/discs/disc5.png",
+"https://raw.githubusercontent.com/Kenatskyline/chaos/main/discs/disc6.png"
+];
 
 const grid = document.getElementById("grid");
+const statusText = document.getElementById("status");
 
 function build(){
   grid.innerHTML = "";
 
-  for(let i=1;i<=6;i++){
-
+  for(let i=0;i<6;i++){
     let disc = document.createElement("div");
     disc.className="disc";
 
-    let inner = document.createElement("div");
-    inner.className="inner";
-
-    // FRONT
-    let front = document.createElement("div");
-    front.className="face front";
-
-    let img = document.createElement("img");
-    let paths = getImage(i);
-    let attempt = 0;
-
-    img.src = paths[attempt] + "?v=" + Date.now();
-
-    img.onerror = () => {
-      attempt++;
-      if(attempt < paths.length){
-        img.src = paths[attempt] + "?v=" + Date.now();
-      } else {
-        front.innerHTML = `<div class="error">disc${i}.png not found</div>`;
-      }
-    };
-
-    front.appendChild(img);
-
-    // BACK
-    let back = document.createElement("div");
-    back.className="face back";
-
-    let chaosDiv = document.createElement("div");
-    chaosDiv.className="chaos";
-
-    back.appendChild(chaosDiv);
-
-    inner.appendChild(front);
-    inner.appendChild(back);
-    disc.appendChild(inner);
+    disc.innerHTML = `
+      <div class="inner">
+        <div class="face front">
+          <img src="${images[i]}">
+        </div>
+        <div class="face back">
+          <div class="chaos"></div>
+        </div>
+      </div>
+    `;
 
     disc.onclick = () => flip(disc);
-
     grid.appendChild(disc);
   }
 }
@@ -189,6 +164,8 @@ function flip(disc){
   disc.querySelector(".chaos").innerText = chaos;
 
   disc.classList.add("flipped");
+
+  statusText.innerText = chaos + " has been sentenced.";
 }
 
 function reset(){
@@ -196,6 +173,8 @@ function reset(){
     d.classList.remove("flipped");
     d.querySelector(".chaos").innerText="";
   });
+
+  statusText.innerText = "Mercy or chaos?";
 }
 
 build();
