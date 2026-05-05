@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ravens Nest Chaos</title>
+
+<style>
+body {
+  margin:0;
+  background:#0b0b0b;
+  color:white;
+  font-family:Arial, sans-serif;
+  text-align:center;
+}
+
+h1 {
+  margin-top:20px;
+}
+
+.grid {
+  display:grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap:20px;
+  padding:20px;
+  max-width:600px;
+  margin:auto;
+}
+
+.disc {
+  width:100%;
+  aspect-ratio:1/1;
+  perspective:1000px;
+}
+
+.inner {
+  width:100%;
+  height:100%;
+  position:relative;
+  transform-style:preserve-3d;
+  transition: transform 0.5s ease;
+}
+
+.disc.flipped .inner {
+  transform: rotateY(180deg);
+}
+
+.face {
+  position:absolute;
+  width:100%;
+  height:100%;
+  backface-visibility:hidden;
+  border-radius:50%;
+}
+
+.front img {
+  width:100%;
+  height:100%;
+  border-radius:50%;
+}
+
+.back {
+  transform: rotateY(180deg);
+  background:#f3e6c9;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:10px;
+  border-radius:50%;
+}
+
+.chaos {
+  font-family: "Comic Sans MS", cursive;
+  font-size:20px;
+  color:black;
+  transform:rotate(-5deg);
+}
+
+button {
+  padding:12px 20px;
+  margin:20px;
+  border:none;
+  border-radius:20px;
+  font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<h1>CHAOS</h1>
+
+<div class="grid" id="grid"></div>
+
+<button onclick="reset()">RESET</button>
+
+<script>
+const chaosList = [
+"WEIGHTED VEST",
+"CURSED CROWN",
+"PLANK PRISON",
+"WEAK HAND",
+"SUICIDE DEBT",
+"DOUBLE OR NOTHING"
+];
+
+const images = [
+"discs/disc1.png",
+"discs/disc2.png",
+"discs/disc3.png",
+"discs/disc4.png",
+"discs/disc5.png",
+"discs/disc6.png"
+];
+
+const grid = document.getElementById("grid");
+
+function build() {
+  grid.innerHTML = "";
+  for(let i=0;i<6;i++){
+    let disc = document.createElement("div");
+    disc.className="disc";
+    
+    disc.innerHTML = `
+      <div class="inner">
+        <div class="face front">
+          <img src="${images[i]}">
+        </div>
+        <div class="face back">
+          <div class="chaos"></div>
+        </div>
+      </div>
+    `;
+    
+    disc.onclick = () => flip(disc);
+    grid.appendChild(disc);
+  }
+}
+
+function flip(disc){
+  if(disc.classList.contains("flipped")) return;
+
+  let chaos = chaosList[Math.floor(Math.random()*chaosList.length)];
+  disc.querySelector(".chaos").innerText = chaos;
+
+  disc.classList.add("flipped");
+
+  thud();
+}
+
+function reset(){
+  document.querySelectorAll(".disc").forEach(d=>{
+    d.classList.remove("flipped");
+    d.querySelector(".chaos").innerText="";
+  });
+}
+
+function thud(){
+  let ctx = new (window.AudioContext || window.webkitAudioContext)();
+
+  let osc = ctx.createOscillator();
+  let gain = ctx.createGain();
+
+  osc.type="sine";
+  osc.frequency.setValueAtTime(100, ctx.currentTime);
+  osc.frequency.exponentialRampToValueAtTime(40, ctx.currentTime+0.2);
+
+  gain.gain.setValueAtTime(0.5, ctx.currentTime);
+  gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime+0.4);
+
+  osc.connect(gain);
+  gain.connect(ctx.destination);
+
+  osc.start();
+  osc.stop(ctx.currentTime+0.4);
+}
+
+build();
+</script>
+
+</body>
+</html>
