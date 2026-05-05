@@ -63,8 +63,8 @@ h1 {
 .front img {
   width:100%;
   height:100%;
-  border-radius:50%;
   object-fit:cover;
+  border-radius:50%;
 }
 
 .back {
@@ -111,7 +111,7 @@ button {
 
 <script>
 
-// 🔥 Chaos
+// 🔥 Chaos list
 const chaosList = [
 "WEIGHTED VEST",
 "CURSED CROWN",
@@ -121,14 +121,14 @@ const chaosList = [
 "DOUBLE OR NOTHING"
 ];
 
-// 🔥 THIS FIXES YOUR ISSUE (pulls images directly from GitHub)
+// ✅ CORRECT PATH (ROOT)
 const images = [
-"https://raw.githubusercontent.com/Kenatskyline/chaos/main/discs/disc1.png",
-"https://raw.githubusercontent.com/Kenatskyline/chaos/main/discs/disc2.png",
-"https://raw.githubusercontent.com/Kenatskyline/chaos/main/discs/disc3.png",
-"https://raw.githubusercontent.com/Kenatskyline/chaos/main/discs/disc4.png",
-"https://raw.githubusercontent.com/Kenatskyline/chaos/main/discs/disc5.png",
-"https://raw.githubusercontent.com/Kenatskyline/chaos/main/discs/disc6.png"
+"/discs/disc1.png",
+"/discs/disc2.png",
+"/discs/disc3.png",
+"/discs/disc4.png",
+"/discs/disc5.png",
+"/discs/disc6.png"
 ];
 
 const grid = document.getElementById("grid");
@@ -144,7 +144,7 @@ function build(){
     disc.innerHTML = `
       <div class="inner">
         <div class="face front">
-          <img src="${images[i]}">
+          <img src="${images[i]}" alt="disc">
         </div>
         <div class="face back">
           <div class="chaos"></div>
